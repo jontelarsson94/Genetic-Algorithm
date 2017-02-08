@@ -25,7 +25,7 @@ int findFittest(float *fitness);
 
 const int numberOfCities = 52;
 const int populationSize = 1000;
-const int numToFinish = 10000;
+const int numToFinish = 100000;
 City *cities;
 
 int main(int argc, const char * argv[]) {
@@ -76,15 +76,15 @@ int travelingSalesman(int **population, int numToFinish)
         
         pickByProbability(probability, &parentOne, &parentTwo);
         
-        cout << "ParentOne: " << parentOne << " ParentTwo: " << parentTwo << endl;
+        //cout << "ParentOne: " << parentOne << " ParentTwo: " << parentTwo << endl;
         
         int *child = crossover(population[parentOne], population[parentTwo]);
         
-        for(int i = 0; i < numberOfCities; i++)
+        /*for(int i = 0; i < numberOfCities; i++)
         {
             cout << child[i] << "->";
         }
-        cout << "\n\n";
+        cout << "\n\n";*/
         
         mutateIndividual(child);
         
@@ -180,7 +180,7 @@ int* crossover(int parentOne[], int parentTwo[])
     
     int pos2 = rand() %  (numberOfCities-2) + 1;
     int pos1 = rand() %  pos2 + 1;
-    cout << "pos1: " << pos1 << " pos2: " << pos2 << endl;
+    //cout << "pos1: " << pos1 << " pos2: " << pos2 << endl;
     int holdNum = pos2-pos1;
     
     int *child = new int[numberOfCities];
@@ -208,7 +208,7 @@ int* crossover(int parentOne[], int parentTwo[])
         child[i] = parentTwo[current];
         current++;
     }
-    for(int i = 0; i < numberOfCities; i++)
+    /*for(int i = 0; i < numberOfCities; i++)
     {
         cout << child[i] << "->";
         if(child[i] == 0 || child[i] > 52){
@@ -226,8 +226,8 @@ int* crossover(int parentOne[], int parentTwo[])
             exit(0);
         }
             
-    }
-    cout << endl;
+    }*/
+    //cout << endl;
     return child;
 }
 
@@ -259,7 +259,7 @@ void pickByProbability(float* probability, int *parentOne, int *parentTwo)
     
     float firstRand = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
     float secondRand = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-    cout << "FirstRand: " << firstRand << " SecondRand: " << secondRand << endl;
+    //cout << "FirstRand: " << firstRand << " SecondRand: " << secondRand << endl;
     for(int i = 0; i < populationSize; i++) {
         int same = false;
         if(firstRand >= first[i] && firstRand <= second[i]){
