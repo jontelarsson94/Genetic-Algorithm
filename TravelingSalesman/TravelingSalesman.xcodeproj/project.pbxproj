@@ -7,12 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4623D7581E4B369D00DAE696 /* berlin52.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4623D7571E4B369D00DAE696 /* berlin52.txt */; };
 		4676B4B21E4A4E2000D7E494 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4676B4B11E4A4E2000D7E494 /* main.cpp */; };
 		4676B4B91E4A4E4D00D7E494 /* City.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4676B4B81E4A4E4D00D7E494 /* City.cpp */; };
 		4676B4BC1E4A4EAB00D7E494 /* Initializer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4676B4BA1E4A4EAB00D7E494 /* Initializer.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		4623D7561E4B367300DAE696 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 16;
+			files = (
+				4623D7581E4B369D00DAE696 /* berlin52.txt in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4676B4AC1E4A4E2000D7E494 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -25,6 +36,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4623D7571E4B369D00DAE696 /* berlin52.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = berlin52.txt; sourceTree = "<group>"; };
 		4676B4AE1E4A4E2000D7E494 /* TravelingSalesman */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = TravelingSalesman; sourceTree = BUILT_PRODUCTS_DIR; };
 		4676B4B11E4A4E2000D7E494 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		4676B4B81E4A4E4D00D7E494 /* City.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = City.cpp; sourceTree = "<group>"; };
@@ -45,6 +57,7 @@
 		4676B4A51E4A4E2000D7E494 = {
 			isa = PBXGroup;
 			children = (
+				4623D7571E4B369D00DAE696 /* berlin52.txt */,
 				4676B4B01E4A4E2000D7E494 /* TravelingSalesman */,
 				4676B4AF1E4A4E2000D7E494 /* Products */,
 			);
@@ -78,6 +91,7 @@
 				4676B4AA1E4A4E2000D7E494 /* Sources */,
 				4676B4AB1E4A4E2000D7E494 /* Frameworks */,
 				4676B4AC1E4A4E2000D7E494 /* CopyFiles */,
+				4623D7561E4B367300DAE696 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -254,6 +268,7 @@
 				4676B4B71E4A4E2000D7E494 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -7,23 +7,255 @@
 //
 
 #include <iostream>
-#include "City.cpp"
 #include "Initializer.cpp"
+#include <math.h>
 using namespace std;
+
+int travelingSalesman(int **population, int numToFinish);
+float calculateDistance(City one, City two);
+float calculateFitness(int cityIds[]);
+int* mutateIndividual(int individual[]);
+bool inArray(int arr[], int holdNum, int num);
+int* crossover(int parentOne[], int parentTwo[]);
+void setProbability(float* probability, float* fitness);
+void pickByProbability(float* probability, int *parentOne, int *parentTwo);
+float calculateRouteDistance(int cityIds[]);
+void setNewPopoulation(int *child, int **population, float *fitness);
+int findFittest(float *fitness);
+
+const int numberOfCities = 52;
+const int numToFinish = 100;
+City *cities;
 
 int main(int argc, const char * argv[]) {
     
     Initializer init;
     
-    int **ary = init.initializeIndividuals(5);
+    cities = init.readCitiesFromFile("Berlin52.txt", numberOfCities);
     
-    ary[0] = ary[1];
+    int **population = init.initializeIndividuals(numberOfCities);
     
-    for(int i = 0; i < 5; i++) {
-        for(int j = 0; j < 5; j++) {
-            cout << ary[i][j] << ", ";
-        }
-    }
+    int fittest = travelingSalesman(population, numToFinish);
+    
+    float routeDistance = calculateRouteDistance(population[fittest]);
+    
+    cout << routeDistance;
     
     return 0;
 }
+
+int travelingSalesman(int **population, int numToFinish)
+{
+    float *fitness = new float[numberOfCities];
+    
+    float *probability = new float[numberOfCities];
+    
+    int parentOne, parentTwo;
+    int loops = 0;
+    
+    for(int i = 0; i < numberOfCities; i++) {
+        fitness[i] = calculateFitness(population[i]);
+    }
+    
+    int fittest = findFittest(fitness);
+    
+    while(loops < numToFinish) {
+        
+        setProbability(probability, fitness);
+        
+        pickByProbability(probability, &parentOne, &parentTwo);
+        
+        int *child = crossover(population[parentOne], population[parentTwo]);
+        
+        mutateIndividual(child);
+        
+        setNewPopoulation(child, population, fitness);
+        
+        int newFittest = findFittest(fitness);
+        
+        if(fittest == newFittest) {
+            loops++;
+        } else {
+            loops = 0;
+            fittest = newFittest;
+        }
+        
+    }
+    
+    return fittest;
+}
+
+int findFittest(float *fitness)
+{
+    int fittest = 0;
+    float fittestFitness = fitness[0];
+    for(int i = 1; i < numberOfCities; i++) {
+        if(fitness[i] > fittestFitness){
+            fittest = i;
+            fittestFitness = fitness[i];
+        }
+    }
+    return fittest;
+}
+
+float calculateDistance(City one, City two)
+{
+    return sqrt((pow (two.x-one.x, 2.0))+(pow(two.y-one.y, 2.0)));
+}
+
+float calculateFitness(int cityIds[])
+{
+    float fitness = 0.0;
+    
+    for(int i = 0; i < numberOfCities-1; i++) {
+        fitness += calculateDistance(cities[cityIds[i]], cities[cityIds[i+1]]);
+    }
+    
+    fitness += calculateDistance(cities[cityIds[numberOfCities-1]], cities[cityIds[0]]);
+    
+    
+    return 1/fitness;
+}
+
+float calculateRouteDistance(int cityIds[])
+{
+    float distance = 0.0;
+    
+    for(int i = 0; i < numberOfCities-1; i++) {
+        distance += calculateDistance(cities[cityIds[i]], cities[cityIds[i+1]]);
+    }
+    
+    distance += calculateDistance(cities[cityIds[numberOfCities-1]], cities[cityIds[0]]);
+    
+    
+    return distance;
+}
+
+int* mutateIndividual(int individual[])
+{
+    srand (time(NULL));
+    
+    int pos1 = rand() %  numberOfCities + 1;
+    int pos2 = rand() %  numberOfCities + 1;
+    int hold = individual[pos1];
+    
+    individual[pos1] = individual[pos2];
+    individual[pos2] = hold;
+    
+    return individual;
+}
+
+bool inArray(int arr[], int holdNum, int num)
+{
+    for(int i = 0; i < holdNum; i++) {
+        if(arr[i] == num)
+            return true;
+    }
+    return false;
+}
+
+int* crossover(int parentOne[], int parentTwo[])
+{
+    srand (time(NULL));
+    
+    //int child[numberOfCities];
+    
+    int pos2 = rand() %  numberOfCities + 1;
+    int pos1 = rand() %  pos2 + 1;
+    int holdNum = pos2-pos1;
+    
+    int *child = new int[numberOfCities];
+    
+    int holdArr[holdNum];
+    
+    for(int i = pos1, j = 0; i < pos2; i++, j++) {
+        child[i] = parentOne[i];
+        holdArr[j] = parentOne[i];
+    }
+    
+    int current = 0;
+    for(int i = 0; i < pos1; i++) {
+        while(inArray(holdArr, holdNum, parentTwo[current])){
+            current++;
+        }
+        child[i] = parentTwo[current];
+        current++;
+    }
+    
+    for(int i = pos2; i < numberOfCities; i++) {
+        while(inArray(holdArr, holdNum, parentTwo[current])) {
+            current++;
+        }
+        child[i] = parentTwo[current];
+        current++;
+    }
+
+    return child;
+}
+
+void setProbability(float* probability, float* fitness)
+{
+    float totalFitness = 0.0;
+    for(int i = 0; i < numberOfCities; i++) {
+        totalFitness += fitness[i];
+    }
+    
+    for(int i = 0; i < numberOfCities; i++) {
+        probability[i] = fitness[i] / totalFitness;
+    }
+}
+
+void pickByProbability(float* probability, int *parentOne, int *parentTwo)
+{
+    srand (time(NULL));
+    
+    float first[numberOfCities];
+    float second[numberOfCities];
+    
+    float start = 0.0;
+    
+    for(int i = 0; i < numberOfCities; i++) {
+        first[i] = start;
+        second[i] = start+probability[i];
+        start += probability[i];
+    }
+    
+    float firstRand = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+    float secondRand = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+    
+    for(int i = 0; i < numberOfCities; i++) {
+        int same = false;
+        if(firstRand >= first[i] && firstRand <= second[i]){
+            *parentOne = i;
+            same = true;
+        }
+        if(secondRand >= first[i] && secondRand <= second[i]){
+            if(!same)
+                *parentTwo = i;
+            else
+                secondRand = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+        }
+    }
+}
+
+void setNewPopoulation(int *child, int **population, float *fitness)
+{
+    int worst = 0;
+    float worstFitness = fitness[0];
+    float childFitness = calculateFitness(child);
+    for(int i = 1; i < numberOfCities; i++) {
+        if(fitness[i] < worstFitness) {
+            worstFitness = fitness[i];
+            worst = i;
+        }
+    }
+    
+    if(childFitness > worstFitness){
+        population[0] = child;
+        fitness[0] = childFitness;
+    }
+}
+
+
+
+
