@@ -15,21 +15,21 @@ using namespace std;
 
 class Initializer {
 public:
-    int** initializeIndividuals(int numberOfCities)
+    int** initializeIndividuals(int numberOfCities, int populationSize)
     {
         srand (time(NULL));
-        int** ary = new int*[numberOfCities];
-        for(int i = 0; i < numberOfCities; ++i){
+        int** ary = new int*[populationSize];
+        for(int i = 0; i < populationSize; ++i){
             ary[i] = new int[numberOfCities];
         }
     
-        for(int i = 0; i < numberOfCities; i++) {
+        for(int i = 0; i < populationSize; i++) {
             for(int j = 0; j < numberOfCities; j++) {
                 ary[i][j] = j+1;
             }
             for(int j = 1; j < numberOfCities; j++) {
-                int pos1 = rand() %  numberOfCities-1 + 1;
-                int pos2 = rand() %  numberOfCities-1 + 1;
+                int pos1 = rand() %  (numberOfCities-1) + 1;
+                int pos2 = rand() %  (numberOfCities-1) + 1;
                 int hold = ary[i][pos1];
                 ary[i][pos1] = ary[i][pos2];
                 ary[i][pos2] = hold;
