@@ -45,7 +45,7 @@ public:
         int id;
         float x, y;
         int i = 0;
-        while (infile >> id >> x >> y)
+        while ((infile >> id >> x >> y) && i < numberOfCities)
         {
             cities[i] = City(id, x, y);
             i++;

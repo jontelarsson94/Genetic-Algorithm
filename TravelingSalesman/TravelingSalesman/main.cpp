@@ -23,12 +23,14 @@ float calculateRouteDistance(int cityIds[]);
 void setNewPopulation(int *child, int **population, float *fitness);
 int findFittest(float *fitness);
 
-const int numberOfCities = 52;
+const int numberOfCities = 8;
 const int populationSize = 100000;
-const int numToFinish = 1000;
+const int numToFinish = 3;
 City *cities;
 
 int main(int argc, const char * argv[]) {
+    
+    srand (time(NULL));
     
     Initializer init;
     
@@ -74,7 +76,15 @@ int travelingSalesman(int **population, int numToFinish)
         
         pickByProbability(probability, &parentOne, &parentTwo);
         
+        cout << "ParentOne: " << parentOne << " ParentTwo: " << parentTwo << endl;
+        
         int *child = crossover(population[parentOne], population[parentTwo]);
+        
+        for(int i = 0; i < numberOfCities; i++)
+        {
+            cout << child[i] << "->";
+        }
+        cout << "\n\n";
         
         mutateIndividual(child);
         
@@ -142,7 +152,6 @@ float calculateRouteDistance(int cityIds[])
 
 int* mutateIndividual(int individual[])
 {
-    srand (time(NULL));
     
     int pos1 = rand() %  numberOfCities + 1;
     int pos2 = rand() %  numberOfCities + 1;
@@ -166,13 +175,10 @@ bool inArray(int arr[], int holdNum, int num)
 
 int* crossover(int parentOne[], int parentTwo[])
 {
-    srand (time(NULL));
-    
-    //int child[numberOfCities];
     
     int pos2 = rand() %  numberOfCities + 1;
     int pos1 = rand() %  pos2 + 1;
-    
+    cout << "pos1: " << pos1 << " pos2: " << pos2 << endl;
     int holdNum = pos2-pos1;
     
     int *child = new int[numberOfCities];
@@ -200,7 +206,11 @@ int* crossover(int parentOne[], int parentTwo[])
         child[i] = parentTwo[current];
         current++;
     }
-
+    for(int i = 0; i < numberOfCities; i++)
+    {
+        cout << child[i] << "->";
+    }
+    cout << endl;
     return child;
 }
 
@@ -218,7 +228,6 @@ void setProbability(float* probability, float* fitness)
 
 void pickByProbability(float* probability, int *parentOne, int *parentTwo)
 {
-    srand (time(NULL));
     
     float first[numberOfCities];
     float second[numberOfCities];
@@ -233,7 +242,7 @@ void pickByProbability(float* probability, int *parentOne, int *parentTwo)
     
     float firstRand = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
     float secondRand = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-    
+    cout << "FirstRand: " << firstRand << " SecondRand: " << secondRand << endl;
     for(int i = 0; i < populationSize; i++) {
         int same = false;
         if(firstRand >= first[i] && firstRand <= second[i]){
@@ -262,8 +271,8 @@ void setNewPopulation(int *child, int **population, float *fitness)
     }
     
     if(childFitness > worstFitness){
-        population[0] = child;
-        fitness[0] = childFitness;
+        population[worst] = child;
+        fitness[worst] = childFitness;
     }
 }
 
