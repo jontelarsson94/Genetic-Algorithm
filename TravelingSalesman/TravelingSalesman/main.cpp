@@ -24,7 +24,7 @@ void setNewPopulation(int *child, int **population, float *fitness);
 int findFittest(float *fitness);
 
 const int numberOfCities = 52;
-const int populationSize = 1000;
+const int populationSize = 100;
 const int numToFinish = 100000;
 City *cities;
 
@@ -49,8 +49,6 @@ int main(int argc, const char * argv[]) {
         cout << population[fittest][i] << " -> ";
     }
     cout << population[fittest][0] << endl;
-    
-    
     
     return 0;
 }
@@ -127,8 +125,6 @@ float calculateFitness(int cityIds[])
     float fitness = 0.0;
     
     for(int i = 0; i < numberOfCities-1; i++) {
-        int a = cityIds[i];
-        int b = cityIds[i+1];
         fitness += calculateDistance(cities[cityIds[i]], cities[cityIds[i+1]]);
     }
     
@@ -178,7 +174,7 @@ bool inArray(int arr[], int holdNum, int num)
 int* crossover(int parentOne[], int parentTwo[])
 {
     
-    int pos2 = rand() %  (numberOfCities-2) + 1;
+    int pos2 = rand() %  (numberOfCities-1) + 1;
     int pos1 = rand() %  pos2 + 1;
     //cout << "pos1: " << pos1 << " pos2: " << pos2 << endl;
     int holdNum = pos2-pos1;
@@ -194,8 +190,10 @@ int* crossover(int parentOne[], int parentTwo[])
     
     int current = 0;
     for(int i = 0; i < pos1; i++) {
-        while(inArray(holdArr, holdNum, parentTwo[current])){
-            current++;
+        if(parentTwo[current]){
+            while(inArray(holdArr, holdNum, parentTwo[current])){
+                current++;
+            }
         }
         child[i] = parentTwo[current];
         current++;
