@@ -23,9 +23,9 @@ float calculateRouteDistance(int cityIds[]);
 void setNewPopulation(int *child, int **population, float *fitness);
 int findFittest(float *fitness);
 
-const int numberOfCities = 8;
-const int populationSize = 100000;
-const int numToFinish = 3;
+const int numberOfCities = 52;
+const int populationSize = 1000;
+const int numToFinish = 10000;
 City *cities;
 
 int main(int argc, const char * argv[]) {
@@ -127,6 +127,8 @@ float calculateFitness(int cityIds[])
     float fitness = 0.0;
     
     for(int i = 0; i < numberOfCities-1; i++) {
+        int a = cityIds[i];
+        int b = cityIds[i+1];
         fitness += calculateDistance(cities[cityIds[i]], cities[cityIds[i+1]]);
     }
     
@@ -153,8 +155,8 @@ float calculateRouteDistance(int cityIds[])
 int* mutateIndividual(int individual[])
 {
     
-    int pos1 = rand() %  numberOfCities + 1;
-    int pos2 = rand() %  numberOfCities + 1;
+    int pos1 = rand() %  (numberOfCities-1) + 1;
+    int pos2 = rand() %  (numberOfCities-1) + 1;
     
     int hold = individual[pos1];
     
@@ -176,7 +178,7 @@ bool inArray(int arr[], int holdNum, int num)
 int* crossover(int parentOne[], int parentTwo[])
 {
     
-    int pos2 = rand() %  numberOfCities + 1;
+    int pos2 = rand() %  (numberOfCities-2) + 1;
     int pos1 = rand() %  pos2 + 1;
     cout << "pos1: " << pos1 << " pos2: " << pos2 << endl;
     int holdNum = pos2-pos1;
@@ -209,6 +211,21 @@ int* crossover(int parentOne[], int parentTwo[])
     for(int i = 0; i < numberOfCities; i++)
     {
         cout << child[i] << "->";
+        if(child[i] == 0 || child[i] > 52){
+            cout << endl << "---> Something is zero or more than 52 <----" << endl;
+            cout << "i is: " << i << endl;
+            cout << "This is parentOne: " << endl;
+            for(int i = 0; i < numberOfCities; i++){
+                cout << parentOne[i] << "->";
+            }
+            cout << endl;
+            cout << "This is parentTwo: " << endl;
+            for(int i = 0; i < numberOfCities; i++){
+                cout << parentTwo[i] << "->";
+            }
+            exit(0);
+        }
+            
     }
     cout << endl;
     return child;
