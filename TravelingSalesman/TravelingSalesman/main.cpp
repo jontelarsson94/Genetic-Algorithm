@@ -67,22 +67,14 @@ int travelingSalesman(int **population, int numToFinish)
     }
 
     int fittest = findFittest(fitness);
-    
+    int gen = 0;
     while(loops < numToFinish) {
         
         setProbability(probability, fitness);
         
         pickByProbability(probability, &parentOne, &parentTwo);
         
-        //cout << "ParentOne: " << parentOne << " ParentTwo: " << parentTwo << endl;
-        
         int *child = crossover(population[parentOne], population[parentTwo]);
-        
-        /*for(int i = 0; i < numberOfCities; i++)
-        {
-            cout << child[i] << "->";
-        }
-        cout << "\n\n";*/
         
         mutateIndividual(child);
         
@@ -96,9 +88,9 @@ int travelingSalesman(int **population, int numToFinish)
             loops = 0;
             fittest = newFittest;
         }
-        
+        gen++;
     }
-    
+    cout << "Number of generations: " << gen << endl;
     return fittest;
 }
 
@@ -176,7 +168,6 @@ int* crossover(int parentOne[], int parentTwo[])
     
     int pos2 = rand() %  (numberOfCities-1) + 1;
     int pos1 = rand() %  pos2 + 1;
-    //cout << "pos1: " << pos1 << " pos2: " << pos2 << endl;
     int holdNum = pos2-pos1;
     
     int *child = new int[numberOfCities];
@@ -206,26 +197,7 @@ int* crossover(int parentOne[], int parentTwo[])
         child[i] = parentTwo[current];
         current++;
     }
-    /*for(int i = 0; i < numberOfCities; i++)
-    {
-        cout << child[i] << "->";
-        if(child[i] == 0 || child[i] > 52){
-            cout << endl << "---> Something is zero or more than 52 <----" << endl;
-            cout << "i is: " << i << endl;
-            cout << "This is parentOne: " << endl;
-            for(int i = 0; i < numberOfCities; i++){
-                cout << parentOne[i] << "->";
-            }
-            cout << endl;
-            cout << "This is parentTwo: " << endl;
-            for(int i = 0; i < numberOfCities; i++){
-                cout << parentTwo[i] << "->";
-            }
-            exit(0);
-        }
-            
-    }*/
-    //cout << endl;
+
     return child;
 }
 
@@ -257,7 +229,7 @@ void pickByProbability(float* probability, int *parentOne, int *parentTwo)
     
     float firstRand = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
     float secondRand = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-    //cout << "FirstRand: " << firstRand << " SecondRand: " << secondRand << endl;
+    
     for(int i = 0; i < populationSize; i++) {
         int same = false;
         if(firstRand >= first[i] && firstRand <= second[i]){
