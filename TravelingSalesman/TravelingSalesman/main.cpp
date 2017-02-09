@@ -25,7 +25,7 @@ int findFittest(float *fitness);
 
 const int mutationProbability = 100;
 const int numberOfCities = 52;
-const int populationSize = 10000;
+const int populationSize = 750;
 const int numToFinish = 100000;
 City *cities;
 
