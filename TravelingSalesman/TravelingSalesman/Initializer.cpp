@@ -27,13 +27,7 @@ public:
             for(int j = 0; j < numberOfCities; j++) {
                 ary[i][j] = j+1;
             }
-            for(int j = 1; j < numberOfCities; j++) {
-                int pos1 = rand() %  (numberOfCities-1) + 1;
-                int pos2 = rand() %  (numberOfCities-1) + 1;
-                int hold = ary[i][pos1];
-                ary[i][pos1] = ary[i][pos2];
-                ary[i][pos2] = hold;
-            }
+            random_shuffle(&ary[i][1], &ary[i][numberOfCities-1]);
         }
         
         return ary;

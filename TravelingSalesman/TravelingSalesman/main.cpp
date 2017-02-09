@@ -25,7 +25,7 @@ int findFittest(float *fitness);
 
 const int mutationProbability = 100;
 const int numberOfCities = 52;
-const int populationSize = 100;
+const int populationSize = 10000;
 const int numToFinish = 100000;
 City *cities;
 
@@ -173,7 +173,12 @@ int* crossover(int parentOne[], int parentTwo[])
 {
     
     int pos2 = rand() %  (numberOfCities-1) + 1;
-    int pos1 = rand() %  pos2 + 1;
+    int pos1 = rand() %  (numberOfCities-1) + 1;
+    if(pos1 > pos2) {
+        int hold = pos1;
+        pos1 = pos2;
+        pos2 = hold;
+    }
     int holdNum = pos2-pos1;
     
     int *child = new int[numberOfCities];
@@ -238,11 +243,11 @@ void pickByProbability(float* probability, int *parentOne, int *parentTwo)
     
     for(int i = 0; i < populationSize; i++) {
         int same = false;
-        if(firstRand >= first[i] && firstRand <= second[i]){
+        if(firstRand > first[i] && firstRand <= second[i]){
             *parentOne = i;
             same = true;
         }
-        if(secondRand >= first[i] && secondRand <= second[i]){
+        if(secondRand > first[i] && secondRand <= second[i]){
             if(!same)
                 *parentTwo = i;
             else
