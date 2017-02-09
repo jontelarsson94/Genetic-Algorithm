@@ -23,6 +23,7 @@ float calculateRouteDistance(int cityIds[]);
 void setNewPopulation(int *child, int **population, float *fitness);
 int findFittest(float *fitness);
 
+const int mutationProbability = 90;
 const int numberOfCities = 52;
 const int populationSize = 100;
 const int numToFinish = 100000;
@@ -143,13 +144,17 @@ float calculateRouteDistance(int cityIds[])
 int* mutateIndividual(int individual[])
 {
     
-    int pos1 = rand() %  (numberOfCities-1) + 1;
-    int pos2 = rand() %  (numberOfCities-1) + 1;
+    int willHappen = rand() % 100;
     
-    int hold = individual[pos1];
+    if(willHappen < mutationProbability){
+        int pos1 = rand() %  (numberOfCities-1) + 1;
+        int pos2 = rand() %  (numberOfCities-1) + 1;
     
-    individual[pos1] = individual[pos2];
-    individual[pos2] = hold;
+        int hold = individual[pos1];
+    
+        individual[pos1] = individual[pos2];
+        individual[pos2] = hold;
+    }
     
     return individual;
 }
