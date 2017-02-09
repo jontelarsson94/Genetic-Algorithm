@@ -23,7 +23,7 @@ float calculateRouteDistance(int cityIds[]);
 void setNewPopulation(int *child, int **population, float *fitness);
 int findFittest(float *fitness);
 
-const int mutationProbability = 90;
+const int mutationProbability = 100;
 const int numberOfCities = 52;
 const int populationSize = 100;
 const int numToFinish = 100000;
@@ -88,6 +88,7 @@ int travelingSalesman(int **population, int numToFinish)
         } else {
             loops = 0;
             fittest = newFittest;
+            cout << calculateRouteDistance(population[fittest]) << endl;
         }
         gen++;
     }
@@ -221,12 +222,12 @@ void setProbability(float* probability, float* fitness)
 void pickByProbability(float* probability, int *parentOne, int *parentTwo)
 {
     
-    float first[numberOfCities];
-    float second[numberOfCities];
+    float first[populationSize];
+    float second[populationSize];
     
     float start = 0.0;
     
-    for(int i = 0; i < numberOfCities; i++) {
+    for(int i = 0; i < populationSize; i++) {
         first[i] = start;
         second[i] = start+probability[i];
         start += probability[i];
