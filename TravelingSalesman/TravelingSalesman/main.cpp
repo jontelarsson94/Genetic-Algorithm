@@ -25,7 +25,7 @@ int findFittest(float *fitness);
 
 const int mutationProbability = 100;
 const int numberOfCities = 52;
-const int populationSize = 750;
+const int populationSize = 100;
 const int numToFinish = 100000;
 City *cities;
 
@@ -68,6 +68,8 @@ int travelingSalesman(int **population, int numToFinish)
     }
 
     int fittest = findFittest(fitness);
+    cout << calculateRouteDistance(population[fittest]) << endl;
+    //exit(0);
     int gen = 0;
     while(loops < numToFinish) {
         
@@ -88,8 +90,9 @@ int travelingSalesman(int **population, int numToFinish)
         } else {
             loops = 0;
             fittest = newFittest;
-            cout << calculateRouteDistance(population[fittest]) << endl;
+            //cout << calculateRouteDistance(population[fittest]) << endl;
         }
+        cout << gen << "\t" << calculateRouteDistance(population[fittest]) << endl;
         gen++;
     }
     cout << "Number of generations: " << gen << endl;
